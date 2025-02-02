@@ -1,0 +1,90 @@
+this is src/app/(auth)/demo/page.tsx -->
+
+// Remove separate demo page - use demo button instead
+import { redirect } from 'next/navigation';
+
+export default function DemoPage() {
+  redirect('/auth/login');
+}
+
+and this is src/app/(marketing)/about/page.tsx -->
+
+// Remove separate demo page - use demo button instead
+import { redirect } from 'next/navigation';
+
+export default function DemoPage() {
+  redirect('/auth/login');
+}
+
+and this is src/app/(marketing)/api/page.tsx -->
+
+"use client";
+
+import { APIHeader } from '@/components/api/api-header';
+import { APIAuthentication } from '@/components/api/api-authentication';
+import { APIEndpoints } from '@/components/api/api-endpoints';
+
+export default function APIPage() {
+  return (
+    <>
+      <APIHeader />
+      <APIAuthentication />
+      <APIEndpoints />
+    </>
+  );
+}
+
+and this is src/app/(marketing)/demo/page.tsx
+
+"use client";
+
+import { DemoHeader } from '@/components/demo/demo-header';
+import { DemoMetrics } from '@/components/demo/demo-metrics';
+import { DemoShipments } from '@/components/demo/demo-shipments';
+import { DemoActivity } from '@/components/demo/demo-activity';
+import { DemoFeatures } from '@/components/demo/demo-features';
+import { DemoCTA } from '@/components/demo/demo-cta';
+
+export default function DemoPage() {
+  return (
+    <div className="min-h-screen bg-background">
+      <DemoHeader />
+      
+      <div className="container mx-auto px-4 py-12 space-y-16">
+        <DemoMetrics />
+        
+        <div className="grid lg:grid-cols-2 gap-8">
+          <DemoShipments />
+          <DemoActivity />
+        </div>
+        
+        <DemoFeatures />
+        <DemoCTA />
+      </div>
+    </div>
+  );
+}
+
+and this is src/app/(marketing)/features/page.tsx -->
+
+"use client";
+
+import { FeaturesHeader } from '@/components/features/features-header';
+import { FeatureGrid } from '@/components/features/feature-grid';
+import { UseCases } from '@/components/features/use-cases';
+import { BenefitsSection } from '@/components/features/benefits-section';
+import { Comparison } from '@/components/features/comparison';
+import { CTASection } from '@/components/features/cta-section';
+
+export default function FeaturesPage() {
+  return (
+    <>
+      <FeaturesHeader />
+      <FeatureGrid />
+      <UseCases />
+      <BenefitsSection />
+      <Comparison />
+      <CTASection />
+    </>
+  );
+}
