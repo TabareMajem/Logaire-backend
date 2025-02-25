@@ -3,24 +3,26 @@ import { AgentFactory } from './agent-factory';
 import { AgentMonitor } from './agent-monitor';
 import { AgentRegistry } from './agent-registry';
 import { AgentResult, AgentTask } from './types';
+import { BaseAgent, BaseAgentConfig } from './base-agent';
 
 export class AgentOrchestrator {
   private readonly factory: AgentFactory;
   private readonly monitor: AgentMonitor;
 
   constructor() {
-    this.factory = new AgentFactory();
+    this.factory = AgentFactory.getInstance(); // Use singleton instance
     this.monitor = new AgentMonitor();
   }
 
   async executeTask(
     agentType: string,
     task: AgentTask,
-    context: Record<string, any> = {}
+    context: BaseAgentConfig = { id: '', type: '', enabled: true } // Use proper BaseAgentConfig type with defaults
   ): Promise<AgentResult> {
     try {
       // Validate agent type and capability
-      if (!AgentRegistry.hasCapability(agentType, task.type)) {
+      if (!AgentRegistry.getInstance().hasCapability(agentType, task.type)) {
+        // Fixed: Get instance first, assuming AgentRegistry follows similar singleton pattern
         throw new Error(
           `Agent type ${agentType} does not support task type ${task.type}`
         );
@@ -34,7 +36,8 @@ export class AgentOrchestrator {
 
       try {
         // Execute task
-        const result = await agent.execute(task);
+        // Fixed: Add explicit type check or cast to ensure execute method exists
+        const result = await (agent as BaseAgent & { execute: (task: AgentTask) => Promise<AgentResult> }).execute(task);
 
         // Record successful execution
         await this.monitor.completeExecution(executionId, result);

@@ -11,6 +11,7 @@ interface AgentRegistration {
 export class AgentRegistry {
   private static instance: AgentRegistry;
   private registeredAgents: Map<string, AgentRegistration>;
+  private capabilities: Map<string, Set<string>> = new Map();
 
   private constructor() {
     this.registeredAgents = new Map();
@@ -119,5 +120,10 @@ export class AgentRegistry {
       ErrorLogger.error('Failed to update agent config', error as Error);
       throw error;
     }
+  }
+
+  public hasCapability(agentType: string, taskType: string): boolean {
+    const tasks = this.capabilities.get(agentType);
+    return tasks ? tasks.has(taskType) : false;
   }
 }

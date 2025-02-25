@@ -1,6 +1,6 @@
 import { ErrorLogger } from '@/lib/errors/logger';
 import { ErrorRecoverySystem } from '@/lib/errors/recovery-system';
-import { metricsCollector } from '@/lib/monitoring/metrics/metrics-collector';
+import { metricsCollector, MetricType } from '@/lib/monitoring/metrics/metrics-collector';
 import { BaseAgent } from './base-agent';
 
 export interface EnhancedAgentOptions {
@@ -14,12 +14,16 @@ export abstract class EnhancedBaseAgent extends BaseAgent {
   protected options: Required<EnhancedAgentOptions>;
 
   constructor(id: string, options: EnhancedAgentOptions = {}) {
-    super(id);
+    super(id, {
+      id,
+      type: 'enhanced',
+      enabled: true
+    });
     this.options = {
       maxRetries: options.maxRetries ?? 3,
       timeout: options.timeout ?? 30000,
       recoveryEnabled: options.recoveryEnabled ?? true,
-      validateOutput: options.validateOutput ?? true
+      validateOutput: options.validateOutput ?? true,
     };
   }
 
@@ -72,11 +76,11 @@ export abstract class EnhancedBaseAgent extends BaseAgent {
   }
 
   protected async recordMetric(
-    name: string,
+    type: MetricType,
     value: number,
     tags: Record<string, string> = {}
   ): Promise<void> {
-    await metricsCollector.recordMetric(name, value, {
+    await metricsCollector.recordMetric(type, value, {
       agentId: this.id,
       ...tags
     });

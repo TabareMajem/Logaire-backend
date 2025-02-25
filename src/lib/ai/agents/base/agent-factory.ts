@@ -3,9 +3,9 @@ import { BaseAgent, BaseAgentConfig } from './base-agent';
 
 export class AgentFactory {
   private static instance: AgentFactory;
-  private agentRegistry: Map<string, typeof BaseAgent> = new Map();
+  private agentRegistry: Map<string, new (config: BaseAgentConfig) => BaseAgent> = new Map();
 
-  private constructor() {}
+  public constructor() {}
 
   static getInstance(): AgentFactory {
     if (!this.instance) {
@@ -14,7 +14,7 @@ export class AgentFactory {
     return this.instance;
   }
 
-  registerAgent(name: string, agentClass: typeof BaseAgent): void {
+  registerAgent(name: string, agentClass: new (config: BaseAgentConfig) => BaseAgent): void {
     if (this.agentRegistry.has(name)) {
       throw new Error(`Agent type ${name} is already registered`);
     }
@@ -28,7 +28,8 @@ export class AgentFactory {
     }
 
     try {
-      return new AgentClass(config);
+      const agent = new AgentClass(config);
+      return agent;
     } catch (error) {
       ErrorLogger.error(`Failed to create agent ${name}:`, error as Error);
       throw error;

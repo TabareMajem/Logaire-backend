@@ -1,0 +1,6 @@
+{
+  "/api/ai/agents/route": "app/api/ai/agents/route.js",
+  "/(app)/dashboard/callcenter/page": "app/(app)/dashboard/callcenter/page.js",
+  "/(app)/dashboard/page": "app/(app)/dashboard/page.js",
+  "/(app)/dashboard/ai-agents/page": "app/(app)/dashboard/ai-agents/page.js"
+}

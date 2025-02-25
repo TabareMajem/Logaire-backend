@@ -1,4 +1,3 @@
-
 export interface AgentTask {
   type: string;
   input: Record<string, any>;
@@ -54,4 +53,10 @@ export interface AgentMetrics {
   averageLatency: number;
   averageConfidence: number;
   errorRate: number;
+}
+
+export interface AgentConfig {
+  id: string;
+  type: string;
+  enabled: boolean;
 }
